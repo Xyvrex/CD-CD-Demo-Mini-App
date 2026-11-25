@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkout</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 420px; margin: 48px auto; padding: 0 16px; }
+    label { display: block; margin-bottom: 4px; }
+    input { padding: 6px; width: 140px; }
+    button { padding: 7px 14px; margin-left: 8px; cursor: pointer; }
+    #total { font-size: 24px; font-weight: 600; margin-top: 24px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Checkout</h1>
+    <label for="subtotal">Subtotal ($)</label>
+    <input id="subtotal" type="number" value="100" min="0" step="0.01">
+    <button id="calculate">Calculate total</button>
+    <p id="total" data-testid="total"></p>
+  </main>
+
+  <script>
+    // The developer's code: adds 8% sales tax to the subtotal.
+    const TAX_RATE = 0.08;
+
+    function calculateTotal(subtotal) {
+      return subtotal * (1 + TAX_RATE);
+    }
+
+    document.getElementById('calculate').addEventListener('click', () => {
+      const subtotal = parseFloat(document.getElementById('subtotal').value) || 0;
+      const total = calculateTotal(subtotal);
+      document.getElementById('total').textContent = `Total: $${total.toFixed(2)}`;
+    });
+  </script>
+</body>
+</html>
