@@ -4,7 +4,8 @@
   "private": true,
   "description": "A tiny project that demonstrates CI/CD with GitHub Actions and Playwright",
   "scripts": {
-    "test": "playwright test"
+    "test": "playwright test",
+    "smoke": "playwright test --config=playwright.smoke.config.js"
   },
   "devDependencies": {
     "@playwright/test": "^1.48.0"

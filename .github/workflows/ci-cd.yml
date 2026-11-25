@@ -42,6 +42,8 @@ jobs:
     needs: test
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -53,3 +55,19 @@ jobs:
           path: app
       - id: deployment
         uses: actions/deploy-pages@v4
+        
+  # Check the live site after it is deployed      
+  smoke-test:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      - run: npx playwright install --with-deps chromium
+      - name: Test the live site
+        run: npm run smoke
+        env:
+          SITE_URL: ${{ needs.deploy.outputs.page_url }}
