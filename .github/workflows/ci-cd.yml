@@ -32,7 +32,7 @@ jobs:
         run: npm test
 
       - name: Save test report if tests fail
-        if: failure()
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
