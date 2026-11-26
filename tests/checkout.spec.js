@@ -9,6 +9,19 @@ async function calculate(page, subtotal) {
   await page.getByRole('button', { name: 'Calculate total' }).click();
 }
 
+test('checkout page shows all expected labels and fields', async ({ page }) => {
+  await expect(page).toHaveTitle('Checkout');
+  await expect(page.getByRole('heading', { name: 'Checkout' })).toBeVisible();
+
+  const subtotal = page.getByLabel('Subtotal ($)');
+  await expect(subtotal).toBeVisible();
+  await expect(subtotal).toHaveAttribute('type', 'number');
+  await expect(subtotal).toHaveValue('100');
+
+  await expect(page.getByRole('button', { name: 'Calculate total' })).toBeVisible();
+  await expect(page.getByTestId('total')).toHaveText('');
+});
+
 test.beforeEach(async ({ page }) => {
   await page.goto(appUrl);
 });
